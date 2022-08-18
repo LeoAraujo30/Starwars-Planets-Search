@@ -22,12 +22,12 @@ function Search() {
 
   return (
     <div>
-      <label htmlFor="value">
+      <label htmlFor="name">
         Search:
         <input
           type="text"
-          id="value"
-          name="value"
+          id="name"
+          name="name"
           data-testid="name-filter"
           value={ filterByName.name }
           onChange={ inpChange }
