@@ -12,6 +12,8 @@ function Provider({ children }) {
   const [number, setNumber] = useState('0');
 
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [options, setOptions] = useState(['population', 'orbital_period', 'diameter',
+    'rotation_period', 'surface_water']);
 
   const fetchPlanets = async () => {
     const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -53,6 +55,8 @@ function Provider({ children }) {
     setNumber,
     filterByNumericValues,
     setFilterByNumericValues,
+    options,
+    setOptions,
   };
 
   return (

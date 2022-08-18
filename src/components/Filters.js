@@ -4,7 +4,7 @@ import PlanetContext from '../context/PlanetContext';
 function Filters() {
   const { column, comparison, number, setColumn, setComparison, setNumber,
     setPlanets, allPlanets, planets, filterByName,
-    filterByNumericValues, setFilterByNumericValues,
+    filterByNumericValues, setFilterByNumericValues, options, setOptions,
   } = useContext(PlanetContext);
 
   const inpChange = ({ target }) => {
@@ -18,7 +18,7 @@ function Filters() {
     }
   };
 
-  const addFilter = () => {
+  const updateTable = () => {
     if (filterByNumericValues.length > 0 || filterByName.name.length > 0) {
       if (comparison === 'maior que') {
         setPlanets(
@@ -53,9 +53,22 @@ function Filters() {
     }
   };
 
-  useEffect(() => addFilter(), [filterByNumericValues]);
+  useEffect(() => { updateTable(); setColumn(options[0]); }, [filterByNumericValues]);
 
-  const addFilterInArray = () => {
+  const optionOn = () => {
+    const bool1 = filterByNumericValues.some((filter) => filter.column === 'population');
+    const bool2 = filterByNumericValues
+      .some((filter) => filter.column === 'orbital_period');
+    const bool3 = filterByNumericValues.some((filter) => filter.column === 'diameter');
+    const bool4 = filterByNumericValues
+      .some((filter) => filter.column === 'rotation_period');
+    const bool5 = filterByNumericValues
+      .some((filter) => filter.column === 'surface_water');
+
+    return [bool1, bool2, bool3, bool4, bool5];
+  };
+
+  const addFilter = () => {
     const obj = { column, comparison, value: number };
     const bool = filterByNumericValues.some(
       (filter) => filter.column === obj.column
@@ -69,6 +82,7 @@ function Filters() {
     } else {
       setFilterByNumericValues(filterByNumericValues);
     }
+    setOptions(options.filter((option) => option !== column));
   };
 
   return (
@@ -82,11 +96,11 @@ function Filters() {
           value={ column }
           onChange={ inpChange }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { !optionOn()[0] && <option value="population">population</option> }
+          { !optionOn()[1] && <option value="orbital_period">orbital_period</option> }
+          { !optionOn()[2] && <option value="diameter">diameter</option> }
+          { !optionOn()[3] && <option value="rotation_period">rotation_period</option>}
+          { !optionOn()[4] && <option value="surface_water">surface_water</option> }
         </select>
       </label>
       <label htmlFor="comparison">
@@ -117,7 +131,7 @@ function Filters() {
         type="button"
         data-testid="button-filter"
         // disabled={ !number > 0 }
-        onClick={ addFilterInArray }
+        onClick={ addFilter }
       >
         Filtrar
       </button>
