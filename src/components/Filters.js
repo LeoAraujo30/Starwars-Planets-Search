@@ -3,7 +3,8 @@ import PlanetContext from '../context/PlanetContext';
 
 function Filters() {
   const { column, comparison, number, setColumn, setComparison, setNumber,
-    setPlanets, allPlanets, filterByNumericValues, setFilterByNumericValues,
+    setPlanets, allPlanets, planets, filterByName,
+    filterByNumericValues, setFilterByNumericValues,
   } = useContext(PlanetContext);
 
   const inpChange = ({ target }) => {
@@ -18,20 +19,41 @@ function Filters() {
   };
 
   const addFilter = () => {
-    if (comparison === 'maior que') {
-      setPlanets(
-        allPlanets.filter((planet) => parseFloat(planet[column]) > parseFloat(number)),
-      );
-    } else if (comparison === 'menor que') {
-      setPlanets(
-        allPlanets.filter((planet) => parseFloat(planet[column]) < parseFloat(number)),
-      );
-    } else {
-      setPlanets(
-        allPlanets.filter((planet) => parseFloat(planet[column]) === parseFloat(number)),
-      );
+    if (filterByNumericValues.length > 0 || filterByName.name.length > 0) {
+      if (comparison === 'maior que') {
+        setPlanets(
+          planets.filter((planet) => parseFloat(planet[column]) > parseFloat(number)),
+        );
+      } else if (comparison === 'menor que') {
+        setPlanets(
+          planets.filter((planet) => parseFloat(planet[column]) < parseFloat(number)),
+        );
+      } else {
+        setPlanets(
+          planets
+            .filter((planet) => parseFloat(planet[column]) === parseFloat(number)),
+        );
+      }
+    }
+    if (filterByNumericValues.length === 0) {
+      if (comparison === 'maior que') {
+        setPlanets(
+          allPlanets.filter((planet) => parseFloat(planet[column]) > parseFloat(number)),
+        );
+      } else if (comparison === 'menor que') {
+        setPlanets(
+          allPlanets.filter((planet) => parseFloat(planet[column]) < parseFloat(number)),
+        );
+      } else {
+        setPlanets(
+          allPlanets
+            .filter((planet) => parseFloat(planet[column]) === parseFloat(number)),
+        );
+      }
     }
   };
+
+  useEffect(() => addFilter(), [filterByNumericValues]);
 
   const addFilterInArray = () => {
     const obj = { column, comparison, value: number };
@@ -48,8 +70,6 @@ function Filters() {
       setFilterByNumericValues(filterByNumericValues);
     }
   };
-
-  useEffect(() => addFilter(), [filterByNumericValues]);
 
   return (
     <div>
