@@ -43,22 +43,6 @@ function Table() {
                 <td>{created}</td>
                 <td>{edited}</td>
                 <td>{url}</td>
-                {/* <td>
-                  <button
-                    type="button"
-                    data-testid="edit-btn"
-                    onClick={ () => editOnDispatch(id) }
-                  >
-                    Editar
-                  </button>
-                  <button
-                    type="button"
-                    data-testid="delete-btn"
-                    onClick={ () => removeExpensesDispatch(id) }
-                  >
-                    Excluir
-                  </button>
-                </td> */}
               </tr>
             );
           }) }
